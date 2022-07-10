@@ -1,0 +1,26 @@
+Assumption:-
+Input should correct format.
+If two demands comes at same time the in Input higher price demand first given first.
+demands and supply should be time sorted
+
+
+Approach 
+
+case 1: supply is more, demand is less
+
+case 2: demand is more, supply is less
+
+case 3: demand and supply is equal
+
+Using priority queue to maximize the profit according to their price of supplier and demands.
+
+if supply is there but no demand or supply is unable to fulfill the demand the save it Map for further demands.
+
+then new demand comes and supply is already exist then we will check whether supply is able to full fill the existing demand or not.. 
+
+if demand is there but no supply or No supply to fulfill the dmand then save it into a map for further execution. 
+
+then new supply comes and demand is already exist then we will check new suupply is able to fulfill the demand or not
+
+
+

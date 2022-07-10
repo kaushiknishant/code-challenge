@@ -6,12 +6,15 @@ import co.deeprooted.model.OutputModel;
 import java.util.*;
 
 public class Service implements Comparator<InputModel>{
+    // add supply to the supplyList map
     public Map<String, PriorityQueue<InputModel>> insertSupply(String supply, Map<String, PriorityQueue<InputModel>> supplyList, InputModel inputModel){
         if (supplyList.containsKey(supply)) {
+            //when existing supply is there
             PriorityQueue<InputModel> list = supplyList.get(supply);
             list.add(inputModel);
             supplyList.put(supply, list);
         } else {
+            // no supply is there then add new one
             PriorityQueue<InputModel> newList = new PriorityQueue<>(new Service());
             newList.add(inputModel);
             supplyList.put(supply, newList);
@@ -37,9 +40,10 @@ public class Service implements Comparator<InputModel>{
                     if (sQuantity > 0) {
                         quantity = sQuantity - remainingDemandModel.getQuantity();
                         OutputModel oModel = new OutputModel();
+                        oModel.setDemandOrderId(remainingDemandModel.getOrderId());
+                        oModel.setSupplyOrderId(pqModel.getOrderId());
                         if (quantity >= 0) {
-                            oModel.setDemandOrderId(remainingDemandModel.getOrderId());
-                            oModel.setSupplyOrderId(pqModel.getOrderId());
+                            //supply quantity is more
                             oModel.setQuantity(remainingDemandModel.getQuantity());
                             oModel.setPrice(pqModel.getPrice());
                             result.add(oModel);
@@ -51,8 +55,7 @@ public class Service implements Comparator<InputModel>{
                             }
                         }
                         else {
-                            oModel.setDemandOrderId(remainingDemandModel.getOrderId());
-                            oModel.setSupplyOrderId(pqModel.getOrderId());
+                            // demand quantity is more
                             oModel.setQuantity(sQuantity);
                             oModel.setPrice(pqModel.getPrice());
                             result.add(oModel);
@@ -67,6 +70,7 @@ public class Service implements Comparator<InputModel>{
         }
         return result;
     }
+    //checking demand in supply list 
     public List<OutputModel> checkExistingSupplyList(Map<String, PriorityQueue<InputModel>> supplyList,Map<String, List<InputModel>> demandList, String demandProduce,InputModel inputModel, List<OutputModel> result){
         if(supplyList.containsKey(demandProduce) && supplyList.get(demandProduce).size() > 0) {
             PriorityQueue<InputModel> pqList = supplyList.get(demandProduce);
@@ -151,6 +155,7 @@ public class Service implements Comparator<InputModel>{
 
         }
         else{
+            // save demand to demand List map
             List<InputModel> newList1 = demandList.get(demandProduce);
             if (newList1 == null) {
                 newList1 = new ArrayList<>();
